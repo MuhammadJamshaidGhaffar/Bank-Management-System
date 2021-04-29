@@ -22,7 +22,7 @@ COORD destCoord;
 HANDLE hStdout = createHandle();
 //--------- Menus ----------
 namespace Menu{
-	MenuClass main{{"CREATE NEW ACCOUNT" , "LOGIN" , "ADMIN LOGIN" , "SHOW ALL ACCOUNT HOLDERS"}};
+	MenuClass main{{"CREATE NEW ACCOUNT" , "LOGIN" , "ADMIN LOGIN" , "SHOW ALL ACCOUNT HOLDERS" , "Credits"}};
 	//----- admin Menus ----------
 	MenuClass adminMenu {{"CHANGE PASSWORD" ,  "SHOW ALL ACCOUNTS" , "DELETE ACCOUNT" , "CREATE NEW ADMIN ACCOUNT" , "SHOW TRANSACTION HISTORY" , "LOGOUT" }};
 	MenuClass adminDeleteAccount { {"DELETE  ACCOUNT HOLDER" , "DELETE ADMIN ACCOUNT"}};
@@ -1331,8 +1331,50 @@ void showAllAccounts()
     system("pause");
 }
 
+void credits()
+{
+	//--- Printing Created By Muhammad Jamshaid
+	{
+		{
+		destCoord.X = 12;
+		destCoord.Y = 2;  // options - 1 becuase cursor coords starts from zero not from 1 
+		SetConsoleCursorPosition(hStdout, destCoord); 
+		WORD currentColor = GetColor(hStdout);
+		SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_INTENSITY);   
+		std::cout << std::setw(10) << std::left<< "Created By";
+		std::cout << std::setw(4) << std::left<< " :  ";
+		SetConsoleTextAttribute(hStdout , FOREGROUND_RED | FOREGROUND_INTENSITY);
+		std::cout << "MUHAMMAD JAMSHAID GHAFFAR";
+		SetConsoleTextAttribute(hStdout , currentColor);
+		}
+		{
+		destCoord.X = 12;
+		destCoord.Y = 4;  // options - 1 becuase cursor coords starts from zero not from 1 
+		SetConsoleCursorPosition(hStdout, destCoord);
+		WORD currentColor = GetColor(hStdout);
+		SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_INTENSITY);   
+		std::cout << std::setw(10) << std::left<< "Version";
+		std::cout << std::setw(4) << std::left<< " :  ";
+		SetConsoleTextAttribute(hStdout , FOREGROUND_RED | FOREGROUND_INTENSITY);
+		std::cout << "2";
+		SetConsoleTextAttribute(hStdout , currentColor);
+		}
+		}
+	while(true)
+	{
+		char key = getch();
+		switch(key){
+			case KEY_ESC:
+				return;
+		}
+	}
+	
+}
+
 int main()
 {
+	//----- Setting Color For Console------------
+	SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY);
 	menuSetUp();
     while (true)
     {
@@ -1346,7 +1388,16 @@ int main()
         bool logged_in = false;
         int admin_pos = -1;
         bool admin_is_logged_in = false;
-
+        //-----Printing Bank Management System HEADER--------
+        {
+		destCoord.X = 12;
+		destCoord.Y = 2;  // options - 1 becuase cursor coords starts from zero not from 1 
+		SetConsoleCursorPosition(hStdout, destCoord); 
+		WORD currentColor = GetColor(hStdout);
+		SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_INTENSITY);   
+		std::cout << "BANK MANAGEMENT SYSTEM";
+		SetConsoleTextAttribute(hStdout , currentColor);
+		}
         option = Menu::main.optionsLoop(hStdout , destCoord);
 
         system("CLS");
@@ -1376,6 +1427,8 @@ int main()
         case 4:
             showAllAccounts();
             break;
+        case 5:
+        	credits();
         default:
             break;
         }
