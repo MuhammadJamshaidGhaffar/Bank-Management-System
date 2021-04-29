@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+#my own Data
+data/
+log/
+
+#devC++
+*.dev
+*.win
+*.layout
