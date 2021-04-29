@@ -1,13 +1,13 @@
-# Bank-Management-System
+# Bank-Management-System V2
 This is console Bank Management Program written in C++
 
            BANK MANAGEMENT SYSTEM
 --------------------------------
 CREATED BY : M.JAMSHAID GHAFFAR
 --------------------------------
-![image](https://user-images.githubusercontent.com/75721211/116502998-7683a380-a8ce-11eb-89d0-0f85f7447503.png)
-![image](https://user-images.githubusercontent.com/75721211/116503065-9f0b9d80-a8ce-11eb-9418-0bc2f5cec65a.png)
-![image](https://user-images.githubusercontent.com/75721211/116503032-8d29fa80-a8ce-11eb-9500-c4266ae77848.png)
+![image](https://user-images.githubusercontent.com/75721211/116504339-7a64f500-a8d1-11eb-8850-df2bda1122e7.png)
+![image](https://user-images.githubusercontent.com/75721211/116504558-fcedb480-a8d1-11eb-9d85-f1c7dff02f41.png)
+![image](https://user-images.githubusercontent.com/75721211/116504540-f19a8900-a8d1-11eb-8e8f-42a53338b51f.png)
 
 |-------------------------------|
 |    DEAFAULT ADMIN CREDENTIALS |
