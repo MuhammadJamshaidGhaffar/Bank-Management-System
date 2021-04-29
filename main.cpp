@@ -1,6 +1,4 @@
-
-#Created By Muhammad Jamshaid Ghaffar
-
+#created By Muhammad Jamshaid Ghaffar
 #include <fstream>
 #include <iostream>
 #include <iomanip>
@@ -11,7 +9,9 @@
 #include <string> 
 #include <cstring>
 #include <dirent.h>
+#include <thread>
 //------- My own Includes----------
+#include "menu_api.h"
 //  GOLBAL VARIABLES
 int  max_int = 2147483647;
 const std::string accounts_path = "./data/";
@@ -19,7 +19,25 @@ const std::string admin_accounts_path  = "./data/";
 const std::string transaction_path = "./log/";
 const std::string accounts_file_name = "Accounts.dat";
 const std::string admin_accounts_file_name = "Data.dat";
+COORD destCoord;
+HANDLE hStdout = createHandle();
+//--------- Menus ----------
+namespace Menu{
+	MenuClass main{{"CREATE NEW ACCOUNT" , "LOGIN" , "ADMIN LOGIN" , "SHOW ALL ACCOUNT HOLDERS"}};
+	//----- admin Menus ----------
+	MenuClass adminMenu {{"CHANGE PASSWORD" ,  "SHOW ALL ACCOUNTS" , "DELETE ACCOUNT" , "CREATE NEW ADMIN ACCOUNT" , "SHOW TRANSACTION HISTORY" , "LOGOUT" }};
+	MenuClass adminDeleteAccount { {"DELETE  ACCOUNT HOLDER" , "DELETE ADMIN ACCOUNT"}};
+	MenuClass adminShowAllAccounts {{"SHOW ALL ACCOUNT HOLDERS" , "SHOW ALL ADMIN ACCOUNTS" }};
+	MenuClass adminChangePass { { "CHANGE ACCOUNT HOLDER PASS" , "CHANGE YOUR PASS"}};
+	//----- Logged In User Menu ------------
+	MenuClass loggedIn { { "DISPLAY ACCOUNT INFO", "MODIFY ACCOUNT" ,"DEPOSIT" , "WITHDRAW","SHOW TRANSACTION HISTORY" , "LOGOUT" , "DELETE ACCOUNT"  } };
+	MenuClass modify { { "CHANGE NAME" , "CHANGE PASSWORD" } };
 
+}
+//---  menuSetUp------------
+void menuSetUp();
+//--- Global Functions---------
+void displayTime();
 //---------> class  of acoount holder <-----------
 
 
@@ -250,13 +268,7 @@ public:
         system("cls");
         int option;
         std::cout << "\n\n\t\tMODIFY ACCOUNT";
-        std::cout << "\n\n\t01.CHANGE NAME : ";
-        std::cout << "\n\n\t02.CHANGE PASSWORD : ";
-        std::cout << "\n\n\t03.GO BACK : ";
-        std::cout << "\n\n\tSelect option(1-3) : ";
-        option = getInt(1,3, "\n\n\tSelect option(1-3) : ");
-        //std::cin >> option;
-        //std::cin.ignore();
+        option = Menu::modify.optionsLoop(hStdout , destCoord);
         switch (option)
         {
         case 1:
@@ -273,7 +285,7 @@ public:
             getHiddenPass(pass);
             
             break;
-        case 3:
+        case 0:
             return 0;
         default:
             break;
@@ -487,17 +499,7 @@ void loggedIn(const int& pos)
         //Looged In interface Menu
 
         int option = 0;
-        
-        std::cout << "\n\n\n\t01.DISPLAY ACCOUNT INFO :";
-        std::cout << "\n\n\t02.MODIFY ACCOUNT :";
-        std::cout << "\n\n\t03.DEPOSIT :";
-        std::cout << "\n\n\t04.WITHDRAW :";
-        std::cout << "\n\n\t05.SHOW TRANSACTION HISTORY :";
-        std::cout << "\n\n\t06.LOGOUT :";
-        std::cout << "\n\n\t07.DELETE ACCOUNT :";
-        std::cout << "\n\n\tSelect option(1-7) : ";
-        option = getInt(1,7, "\n\n\tSelect option(1-7) : ");
-        //std::cin >> option;
+        option = Menu::loggedIn.optionsLoop(hStdout , destCoord);
         switch (option)
         {
         case 1:
@@ -526,6 +528,7 @@ void loggedIn(const int& pos)
             showTransaction(user.acno);
             break;
         case 6:
+        case 0:
             return;
         case 7:
             closeAccount(user.getAcno());           
@@ -534,7 +537,6 @@ void loggedIn(const int& pos)
         default:
             break;
         }
-        std::cin.ignore();
     }
 }
 //-----------------------------------------------------------------------------
@@ -1002,16 +1004,8 @@ void adminChangePassPanel(const int& admin_pos, adminAccount& admin)
     while (true)
     {
         system("cls");
-
-        std::cout << "\n\n\n\t01.CHANGE ACCOUNT HOLDER PASS ";
-        std::cout << "\n\n\t02.CHANGE YOUR PASS ";
-        std::cout << "\n\n\t03.GO BACK ";
-
-        std::cout << "\n\n\tSelect option(1-3) : ";
         int option = 0; 
-            option = getInt(1, 3, "\n\n\tSelect option(1-3) : ");
-        //std::cin >> option;
-        //std::cin.ignore(32767, '\n');
+        option = Menu::adminChangePass.optionsLoop(hStdout , destCoord);
         switch (option)
         {
         case 1:
@@ -1020,7 +1014,7 @@ void adminChangePassPanel(const int& admin_pos, adminAccount& admin)
         case 2:
             changeAdminPass(admin_pos, admin);
             break;
-        case 3:
+        case 0:
             return;
 
         default:
@@ -1036,18 +1030,9 @@ void adminShowAllAccountsPanel(const int& admin_pos, adminAccount& admin)
 {
     while (true)
     {
-        system("cls");
-
-
-        std::cout << "\n\n\n\t01.SHOW ALL ACCOUNT HOLDERS  ";
-        std::cout << "\n\n\t02.SHOW ALL ADMIN ACCOUNTS ";
-        std::cout << "\n\n\t03.GO BACK ";
-
-        std::cout << "\n\n\tSelect option(1-3) : ";
+        system("cls");	
         int option = 0;
-        option = getInt(1, 3, "\n\n\tSelect option(1-3) : ");
-        //std::cin >> option;
-       // std::cin.ignore(32767, '\n');
+        option = Menu::adminShowAllAccounts.optionsLoop(hStdout , destCoord);
         switch (option)
         {
 
@@ -1057,7 +1042,7 @@ void adminShowAllAccountsPanel(const int& admin_pos, adminAccount& admin)
         case 2:
             showAllAdminAccounts(admin.getType());
             break;
-        case 3:
+        case 0:
             return;
         default:
             break;
@@ -1074,18 +1059,9 @@ void adminDeleteAccountPanel(const int& admin_pos, adminAccount& admin)
         system("cls");
         adminAccount admin;
         showAdminAccount(admin_pos, admin);
-
-
-
-        std::cout << "\n\n\t01.DELETE  ACCOUNT HOLDER : ";
-        std::cout << "\n\n\t02.DELETE ADMIN ACCOUNT ";
-        std::cout << "\n\n\t03.GO BACK ";
-
-        std::cout << "\n\n\tSelect option(1-3) : ";
+        
         int option = 0;
-        option = getInt(1, 3, "\n\n\tSelect option(1-3) : ");
-        //std::cin >> option;
-       // std::cin.ignore(32767, '\n');
+        option = Menu::adminDeleteAccount.optionsLoop(hStdout , destCoord);
         switch (option)
         {
 
@@ -1095,7 +1071,7 @@ void adminDeleteAccountPanel(const int& admin_pos, adminAccount& admin)
         case 2:
             deleteAdminAccount(admin.getType());
             break;
-        case 3:
+        case 0:
             return;
 
         default:
@@ -1123,25 +1099,19 @@ void adminLoggedIn(const int& admin_pos)
 {
     int total_bank_money = 0;
     total_bank_money = getTotalBankMoney();
+    {
+    	
+	}
     while (true)
     {
         system("cls");
         adminAccount admin;
         showAdminAccount(admin_pos, admin);
         std::cout << "\n\n          BANK MONEY :  RS." << total_bank_money;
-
-        std::cout << "\n\n\n\t01.CHANGE PASSWORD ";
-        std::cout << "\n\n\t02.SHOW ALL ACCOUNTS ";
-        std::cout << "\n\n\t03.DELETE ACCOUNT ";
-        std::cout << "\n\n\t04.CREATE NEW ADMIN ACCOUNT  ";
-        std::cout << "\n\n\t05.SHOW TRANSACTION HISTORY ";
-        std::cout << "\n\n\t06.LOGOUT ";
-
-        std::cout << "\n\n\tSelect option(1-6) : ";
+	 
+        
         int option = 0;
-        option = getInt(1, 6, "\n\n\tSelect option(1-6) : ");
-        //std::cin >> option;
-        //std::cin.ignore(32767, '\n');
+        option = Menu::adminMenu.optionsLoop(hStdout , destCoord);
         switch (option)
         {
         case 1:
@@ -1160,7 +1130,8 @@ void adminLoggedIn(const int& admin_pos)
         case 5:
             adminShowTransactionHistory();
             break;
-        case 6:
+        case 6 :
+		case 0:
             system("cls");
             std::cout << "\n\n\n\tYOU ARE LOGGED OUT!";
             std::cout << "\n\n\t";
@@ -1363,6 +1334,8 @@ void showAllAccounts()
 
 int main()
 {
+	std::thread timeThread ( displayTime);
+	menuSetUp();
     while (true)
     {
 
@@ -1376,17 +1349,14 @@ int main()
         int admin_pos = -1;
         bool admin_is_logged_in = false;
 
-        
-        std::cout << "\n\n\t01.CREATE NEW ACCOUNT";
-        std::cout << "\n\n\t02.LOGIN :";
-        std::cout << "\n\n\t03.ADMIN LOGIN :";
-        std::cout << "\n\n\t04.SHOW ALL ACCOUNT HOLDERS :";
-        std::cout << "\n\n\tSelect option(1-4) : ";
-        option = getInt(1, 4, "\n\n\tSelect option(1-4) : ");
+        option = Menu::main.optionsLoop(hStdout , destCoord);
 
         system("CLS");
         switch (option)
         {
+        	case 0:
+        		return 0;
+        		
         case 1:
             writeAccount();
             break;
@@ -1411,7 +1381,6 @@ int main()
         default:
             break;
         }
-        std::cin.ignore();
     }
 
     
@@ -1420,4 +1389,38 @@ int main()
     return 0;
 }
 
+
+//-------------MenuSetUp--------------
+void menuSetUp()
+{
+	
+	COORD newCoords;
+	
+	//---- adminMenu
+	newCoords = Menu::adminMenu.getCoords();
+    newCoords.Y = 7;
+    Menu::adminMenu.changeCoords(newCoords , Menu::adminMenu.getGapBtwOptions());
+    //------------
+    newCoords = Menu::loggedIn.getCoords();
+    newCoords.Y = 7;
+    Menu::loggedIn.changeCoords(newCoords , Menu::loggedIn.getGapBtwOptions());
+    
+}
+
+//---- display time-------
+void displayTime()
+{
+	while(true)
+	{
+		SetConsoleCursorPosition(hStdout , destCoord);
+		time_t now = time(0);
+	   	tm *ltm = localtime(&now);
+	   	std::cout << "Time: "<< 5+ltm->tm_hour << ":";
+   		std::cout << 30+ltm->tm_min << ":";
+   		std::cout << ltm->tm_sec;
+	   	Sleep(1000);
+	}
+	
+	
+}
 
