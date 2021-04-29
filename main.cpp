@@ -184,7 +184,17 @@ void showTransaction(int acno)
     while (infile.read((char*)&new_transaction, sizeof(new_transaction)))
     {
         char* printed_time = ctime(&new_transaction.time);
-        std::cout << "\n"  << std::left << std::setw(20) <<"  "+ getTransactionType(new_transaction.type) << std::left << std::setw(3) << "RS." << std::left << std::setw(20) << new_transaction.cash << std::left << std::setw(30) << printed_time;
+        std::cout << "\n"  << std::left << std::setw(20) <<"  "+ getTransactionType(new_transaction.type);
+        
+        WORD currentColor = GetColor(hStdout);
+        if(new_transaction.type == TransactionType::DEPOSIT )
+        	SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+		else if(new_transaction.type == TransactionType::WITHDRAW)
+			SetConsoleTextAttribute(hStdout , FOREGROUND_RED | FOREGROUND_INTENSITY);   
+		std::cout << std::left << std::setw(3) << "RS." << std::left << std::setw(20) << new_transaction.cash; 
+        SetConsoleTextAttribute(hStdout , currentColor ); 
+        
+		std::cout << std::left << std::setw(30) << printed_time;
     }
 
     infile.close();
@@ -254,9 +264,25 @@ public:
     void show()
     {
         system("cls");
-        std::cout << "\n\n\tACCOUNT NUMBER : " << acno;
-        std::cout << "\n\n\tACCOUNT HOLDER NAME : " << name;
-        std::cout << "\n\n\tBALANCE : RS." << balance;
+    	
+    	WORD currentColor = GetColor(hStdout);
+    
+		SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);   
+		std::cout <<std::setw(25) << std::left << "\n\n\tACCOUNT NUMBER " << ":  "; 
+		SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+		std::cout << acno;
+		
+		SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);   
+		std::cout <<std::setw(25) << std::left << "\n\n\tACCOUNT HOLDER NAME " << ":  "; 
+		SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+		std::cout << name;
+		
+		SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);   
+		std::cout <<std::setw(25) << std::left << "\n\n\tBALANCE " << ":  "; 
+		SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+		std::cout <<"RS." << balance;
+    	
+    	SetConsoleTextAttribute(hStdout , currentColor);
         std::cout << "\n\n\t";
         system("pause");
     }
@@ -362,10 +388,25 @@ void showAccount(const int& pos, account& user)
     infile.seekg(pos);
     infile.read((char*)&user, sizeof(user));
     infile.close();
-    std::cout << "\n\n     ACCOUNT NUMBER : " << user.getAcno() << "\t\t\tBALANCE : RS." << user.getBalance();
-    std::cout << "\n\n\t\t\tNAME : " << user.getName();
+    
+    WORD currentColor = GetColor(hStdout);
+    
+	SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);   
+	std::cout << "\n\n     ACCOUNT NUMBER : "; 
+	SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+	std::cout << user.getAcno();
+	
+	SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);   
+	std::cout << "\t\t\tBALANCE :" ;
+	SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+    std::cout << "RS." << user.getBalance();
+    
+    SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);   
+	std::cout << "\n\n\t\t\tNAME : ";
+	SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+    std::cout << user.getName();
 
-
+	SetConsoleTextAttribute(hStdout , currentColor);
 }
 //*******************************************************
 //                MODIFY ACCOUNT ON FILE
@@ -680,7 +721,23 @@ void showAdminAccount(const int& admin_pos, adminAccount& admin)
     infile.read((char*)&admin, sizeof(admin));
     infile.close();
     //std::cout << "name : " << admin.getName();
-    std::cout << "\n\n      Name: " << std::left << std::setw(20) << admin.getName() << std::left << std::setw(10) << "Type : " << getAccountTypeName(admin.getType());
+    //---printing Colured Name------------------
+    WORD currentColor = GetColor(hStdout);
+	SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);   
+    std::cout << "\n\n      Name: " ; 
+	SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_INTENSITY);   
+	std::cout << std::left << std::setw(20) << admin.getName(); 
+	
+	
+	SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);   
+    std::cout << std::left << std::setw(10) << "Type : " ; 
+
+	SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_INTENSITY);   
+	std::cout <<  getAccountTypeName(admin.getType());
+	
+	SetConsoleTextAttribute(hStdout , currentColor);
+	 //------------------------------------
+    
 }
 //*******************************************************
 //             CHANGE ACCOUNT HOLDER PASS
@@ -763,7 +820,14 @@ void AdminshowAllAccounts()
     account new_account;
     while (infile.read((char*)&new_account, sizeof(new_account)))
     {
-        std::cout << "\n   " << std::left << std::setw(13) << new_account.getAcno() << std::setw(30) << new_account.getName() << std::left << std::setw(20) << new_account.getPass() << std::left << std::setw(10) << new_account.getBalance();
+        std::cout << "\n   " << std::left << std::setw(13) << new_account.getAcno() << std::setw(30) << new_account.getName() << std::left << std::setw(20) << new_account.getPass();
+		
+		//-------- Displaying colurful cash------------
+		WORD currentColor = GetColor(hStdout);
+		SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN| FOREGROUND_INTENSITY);   
+		std::cout<<"RS." << std::left << std::setw(10) << new_account.getBalance();
+		SetConsoleTextAttribute(hStdout , currentColor);
+		//--------------------
     }
     std::cout << "\n\n\t";
     system("pause");
@@ -1106,8 +1170,16 @@ void adminLoggedIn(const int& admin_pos)
         system("cls");
         adminAccount admin;
         showAdminAccount(admin_pos, admin);
-        std::cout << "\n\n          BANK MONEY :  RS." << total_bank_money;
-	 
+        
+        //---printing Colured Money------------------
+        WORD currentColor = GetColor(hStdout);
+		SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);   
+        std::cout << "\n\n          BANK MONEY :  ";
+
+		SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_INTENSITY);   
+		std::cout <<"RS." << total_bank_money;
+		SetConsoleTextAttribute(hStdout , currentColor);
+	 	//------------------------------------
         
         int option = 0;
         option = Menu::adminMenu.optionsLoop(hStdout , destCoord);
@@ -1325,7 +1397,13 @@ void showAllAccounts()
     account new_account;
     while (infile.read((char*)&new_account, sizeof(new_account)))
     {
-        std::cout << "\n   " << std::left << std::setw(20) << new_account.getAcno() << std::setw(40) << new_account.getName() << std::left << std::setw(10) << new_account.getBalance();
+        std::cout << "\n   " << std::left << std::setw(20) << new_account.getAcno() << std::setw(40) << new_account.getName();
+		//-------- Displaying colurful cash------------
+		WORD currentColor = GetColor(hStdout);
+		SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN| FOREGROUND_INTENSITY);   
+		std::cout<<"RS." << std::left << std::setw(10) << new_account.getBalance();
+		SetConsoleTextAttribute(hStdout , currentColor);
+		//--------------------
     }
     std::cout << "\n\n\t";
     system("pause");
@@ -1356,7 +1434,7 @@ void credits()
 		std::cout << std::setw(10) << std::left<< "Version";
 		std::cout << std::setw(4) << std::left<< " :  ";
 		SetConsoleTextAttribute(hStdout , FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "2";
+		std::cout << "2.1";
 		SetConsoleTextAttribute(hStdout , currentColor);
 		}
 		}
@@ -1365,12 +1443,12 @@ void credits()
 		char key = getch();
 		switch(key){
 			case KEY_ESC:
+			case KEY_ENTER:
 				return;
 		}
 	}
 	
 }
-
 int main()
 {
 	//----- Setting Color For Console------------
