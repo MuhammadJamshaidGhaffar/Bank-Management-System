@@ -1452,6 +1452,7 @@ void credits()
 int main()
 {
 	//----- Setting Color For Console------------
+	SetConsoleTitle("Bank Management System v2.1");
 	SetConsoleTextAttribute(hStdout , FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY);
 	menuSetUp();
     while (true)
