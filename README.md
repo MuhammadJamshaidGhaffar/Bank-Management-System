@@ -1,23 +1,19 @@
 # Bank-Management-System V2
-This is console Bank Management Program written in C++
 
-           BANK MANAGEMENT SYSTEM
 --------------------------------
 CREATED BY : M.JAMSHAID GHAFFAR
 --------------------------------
-![image](https://user-images.githubusercontent.com/75721211/116504339-7a64f500-a8d1-11eb-8850-df2bda1122e7.png)
-![image](https://user-images.githubusercontent.com/75721211/116504558-fcedb480-a8d1-11eb-9d85-f1c7dff02f41.png)
-![image](https://user-images.githubusercontent.com/75721211/116504540-f19a8900-a8d1-11eb-8e8f-42a53338b51f.png)
+![image](https://user-images.githubusercontent.com/75721211/116591021-d4000a80-a937-11eb-92f3-cc42bc4202e3.png)
+![image](https://user-images.githubusercontent.com/75721211/116591069-df533600-a937-11eb-99a7-ca0bacd53fee.png)
+![image](https://user-images.githubusercontent.com/75721211/116591133-ef6b1580-a937-11eb-9d55-d3076660b4e3.png)
 
-|-------------------------------|
 |    DEAFAULT ADMIN CREDENTIALS |
 |-------------------------------|
 USERNAME : Jamshaid
 PASSWORD : avast
 
  
-|-------------------------------|
-    TYPES OF ACCOUNTS
+|   TYPES OF ACCOUNTS           |
 |-------------------------------| 
 1) NORMAL/USER ACCOUNTS
 
@@ -25,8 +21,7 @@ PASSWORD : avast
 
   
 
-|-------------------------------|
-   ADMINISTRATOR ROLES
+|  ADMINISTRATOR ROLES          |
 |-------------------------------|
 1) OWNER	
 	There will be 1 owner only. 	
@@ -37,10 +32,9 @@ PASSWORD : avast
 	UNLIMITED
 
 
+
+|     PERMISSIONS               |
 |-------------------------------|
-     PERMISSIONS
-|-------------------------------|
---------------------------------------------------------------------------------
 
 |                             | OWNER    |  CO-OWNER  |  ADMIN  |
 |-----------------------------|----------|------------|---------|
