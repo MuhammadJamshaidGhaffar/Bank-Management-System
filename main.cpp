@@ -1,4 +1,4 @@
-#created By Muhammad Jamshaid Ghaffar
+//created By Muhammad Jamshaid Ghaffar
 #include <fstream>
 #include <iostream>
 #include <iomanip>
@@ -9,7 +9,6 @@
 #include <string> 
 #include <cstring>
 #include <dirent.h>
-#include <thread>
 //------- My own Includes----------
 #include "menu_api.h"
 //  GOLBAL VARIABLES
@@ -1334,7 +1333,6 @@ void showAllAccounts()
 
 int main()
 {
-	std::thread timeThread ( displayTime);
 	menuSetUp();
     while (true)
     {
@@ -1407,20 +1405,4 @@ void menuSetUp()
     
 }
 
-//---- display time-------
-void displayTime()
-{
-	while(true)
-	{
-		SetConsoleCursorPosition(hStdout , destCoord);
-		time_t now = time(0);
-	   	tm *ltm = localtime(&now);
-	   	std::cout << "Time: "<< 5+ltm->tm_hour << ":";
-   		std::cout << 30+ltm->tm_min << ":";
-   		std::cout << ltm->tm_sec;
-	   	Sleep(1000);
-	}
-	
-	
-}
 
