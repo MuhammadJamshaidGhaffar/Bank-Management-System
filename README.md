@@ -3,8 +3,7 @@
 --------------------------------
 CREATED BY : M.JAMSHAID GHAFFAR
 --------------------------------
-|**Download**|  https://github.com/MuhammadJamshaidGhaffar/Bank-Management-System/blob/main/Bank%20Management%20System.exe |
-|------------| ------------------------------------------------------------------------------------------------------------|
+
 
 ![image](https://user-images.githubusercontent.com/75721211/116591021-d4000a80-a937-11eb-92f3-cc42bc4202e3.png)
 ![image](https://user-images.githubusercontent.com/75721211/116591069-df533600-a937-11eb-99a7-ca0bacd53fee.png)
