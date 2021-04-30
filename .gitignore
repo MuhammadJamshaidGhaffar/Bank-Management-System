@@ -27,20 +27,27 @@
 *.lib
 
 # Executables
-*.exe
-*.out
-*.app
+source/*.exe
+source/*.out
+source/*.app
 
 #my own Data
-data/
-log/
+source/data/
+source/log/
+
+Release v1/data/
+Release v1/log/
+
+Release v2/data/
+Releasev2/log/
+
+
 
 #devC++
-*.dev
-*.win
-*.layout
+source/*.dev
+source/*.win
+source/*.layout
 
-*.ico
-*.rc
-*res
-Bank_Management_System_private.h
+source/*.rc
+source/*res
+source/Bank-Management-System_private.h
